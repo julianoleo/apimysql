@@ -31,32 +31,8 @@ class TaskController {
         })
     }
 
-    tranferencia(request, response) {
-        const tarefa = {}
-        tarefa.ctOrigem = request.body.ctOrigem
-        tarefa.ctDestino = request.body.ctDestino
-        tarefa.valor = request.body.valor
-
-        const query ='call transf_saldo(?, ?, ?)'
-
-        MePoupe.query(query, [tarefa.ctOrigem, tarefa.ctDestino, tarefa.valor], (err, rows) => {
-            if (err) {
-                console.log(err)
-                response.status(500)
-                response.json({ "message": "Internal Server Error" })
-            } else if (rows.length > 0) {
-                response.status(200)
-                response.json(rows)
-            } else {
-                response.status(404)
-                response.json({ "message": "Cliente não encontrado!" })
-            }
-        })
-    }
-
     clientesID(request, response) {
         const id = request.params.id
-        const query1 = 'call seleciona_dados(?)'
         const query = 'SELECT * FROM cliente WHERE cod_cliente = ?'
         MePoupe.query(query, [id], (err, rows) => {
             if (err) {
@@ -73,7 +49,47 @@ class TaskController {
         })
     }
 
+    deposito(request, response) {
+        const tarefa = {}
+        tarefa.conta = request.body.conta
+        tarefa.valor = request.body.valor
+        const query = 'call deposito(?, ?)'
 
+        MePoupe.query(query, [tarefa.conta, tarefa.valor], (err, rows) => {
+            if (err) {
+                console.log(err)
+                response.status(500)
+                response.json({ "message": "Internal Server Error" })
+            } else if (rows.length > 0) {
+                response.status(200)
+                response.json(rows)
+            } else {
+                response.status(404)
+                response.json({ "message": "Erro interno!" })
+            }
+        })
+    }
+
+    saque(request, response) {
+        const tarefa = {}
+        tarefa.conta = request.body.conta
+        tarefa.valor = request.body.valor
+        const query = 'call saque(?, ?)'
+
+        MePoupe.query(query, [tarefa.conta, tarefa.valor], (err, rows) => {
+            if (err) {
+                console.log(err)
+                response.status(500)
+                response.json({ "message": "Internal Server Error" })
+            } else if (rows.length > 0) {
+                response.status(200)
+                response.json(rows)
+            } else {
+                response.status(404)
+                response.json({ "message": "Erro interno!" })
+            }
+        })
+    }
 }
 
 module.exports = new TaskController()

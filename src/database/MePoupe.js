@@ -1,8 +1,8 @@
 const mysql = require('mysql');
 
 const conexao = mysql.createConnection({
-    host: '192.168.0.115',
-    port: '3306',
+    host: 'www.qualitysys.com.br',
+    port: '3300',
     user: 'root',
     password: 'Senha@123456',
     database: 'MePoupe',
