@@ -1,0 +1,1 @@
+https://marcoandra.de/javascript/2019/09/03/implementando-uma-api-com-nodejs-e-mysql-para-gerenciamento-de-tarefas.html
