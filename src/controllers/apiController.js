@@ -9,7 +9,7 @@ class apiController {
 
         const email = req.body.email
         const senha = req.body.senha
-        const query = 'select id, senha from usuarios where email = ?'
+        const query = 'select id, senha from usuarios where binary email = ?'
 
         MePoupe.query(query, [email], (err, rows) => {
             if (err) {

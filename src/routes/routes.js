@@ -22,6 +22,6 @@ const { body, validationResult } = require('express-validator')
 
 router.get('/login', apiController.login)
 router.get('/clientes/:id', apiController.verificar, TaskController.clientesRQ)
-
+router.post('/deposito', apiController.verificar, TaskController.deposito)
 
 module.exports = router
