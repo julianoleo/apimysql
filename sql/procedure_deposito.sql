@@ -1,3 +1,4 @@
+use MePoupe;
 DROP PROCEDURE IF EXISTS `deposito`;
 DELIMITER $$
 CREATE PROCEDURE deposito (

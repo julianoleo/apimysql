@@ -1,18 +1,10 @@
 const { request } = require('express')
-const database = require('../database/conections')
 const MePoupe = require('../database/MePoupe')
+const tarefaValidation = require('../util/tarefaValidation')
+const { validationResult } = require('express-validator')
+
 
 class TaskController {
-    novaTarefa(request, response) {
-        const { nome, cpf, rg } = request.body
-        console.log(nome, cpf, rg)
-        database.insert({ nome, cpf, rg }).table("dbClientes").then(data => {
-            console.log(data)
-            response.json({ message: "Dados inseridos com Sucesso!" })
-        }).catch(error => {
-            console.log(error)
-        })
-    }
 
     clientes(request, response) {
         const query = 'SELECT * FROM cliente'
@@ -45,6 +37,24 @@ class TaskController {
             } else {
                 response.status(404)
                 response.json({ "message": "Cliente não encontrado!" })
+            }
+        })
+    }
+
+    clientesDelete(request, response) {
+        const id = request.params.id
+        const query = 'DELETE FROM cliente WHERE cod_cliente = ?'
+        MePoupe.query(query, [id], (err, rows) => {
+            if (err) {
+                console.log(err)
+                response.status(500)
+                response.json({ "message": "Internal Server Error" })
+            } else if (rows.length > 0) {
+                response.status(200)
+                response.json(rows)
+            } else {
+                response.status(404)
+                response.json({ "message": "Cliente Deletado!" })
             }
         })
     }
@@ -89,6 +99,29 @@ class TaskController {
                 response.json({ "message": "Erro interno!" })
             }
         })
+    }
+
+    clientesRQ(request, response) {
+        const errors = validationResult(request);
+        if (!errors.isEmpty()) {
+            return res.status(422).json({ errors: errors.array() })
+        } else {
+            const id = request.params.id
+            const query = 'SELECT * FROM cliente where cod_cliente = ?'
+            MePoupe.query(query, [id], (err, rows) => {
+                if (err) {
+                    console.log(err)
+                    response.status(500)
+                    response.json({ "message": "Internal Server Error" })
+                } else if (rows.length > 0) {
+                    response.status(200)
+                    response.json(rows)
+                } else {
+                    response.status(404)
+                    response.json({ "message": "Cliente não encontrado!" })
+                }
+            })
+        }
     }
 }
 

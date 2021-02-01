@@ -1,4 +1,4 @@
-DROP TRIGGER IF EXISTS ajusta_saldo_deposito;
+DROP TRIGGER IF EXISTS `ajusta_saldo_deposito`;
 
 DELIMITER $
 CREATE TRIGGER ajusta_saldo_deposito AFTER INSERT
