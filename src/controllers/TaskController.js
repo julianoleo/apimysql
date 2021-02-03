@@ -1,8 +1,6 @@
-const { request } = require('express')
 const MePoupe = require('../database/MePoupe')
-const tarefaValidation = require('../util/tarefaValidation')
 const { validationResult } = require('express-validator')
-
+const tarefaValidation = require('../util/tarefaValidation')
 
 class TaskController {
 
@@ -111,20 +109,24 @@ class TaskController {
             return res.status(422).json({ errors: errors.array() })
         } else {
             const id = request.params.id
-            const query = 'SELECT * FROM cliente where cod_cliente = ?'
-            MePoupe.query(query, [id], (err, rows) => {
-                if (err) {
-                    console.log(err)
-                    response.status(500)
-                    response.json({ "message": "Internal Server Error" })
-                } else if (rows.length > 0) {
-                    response.status(200)
-                    response.json(rows)
-                } else {
-                    response.status(404)
-                    response.json({ "message": "Cliente não encontrado!" })
-                }
-            })
+            if (tarefaValidation.verificaID(id) === 1) {
+                const query = 'SELECT * FROM cliente where cod_cliente = ?'
+                MePoupe.query(query, [id], (err, rows) => {
+                    if (err) {
+                        console.log(err)
+                        response.status(500)
+                        response.json({ "message": "Internal Server Error" })
+                    } else if (rows.length > 0) {
+                        response.status(200)
+                        response.json(rows)
+                    } else {
+                        response.status(404)
+                        response.json({ "message": "Cliente não encontrado!" })
+                    }
+                })    
+            } else {
+                response.json({"msg":"o id não é inteiro"})
+            }
         }
     }
 }

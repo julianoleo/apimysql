@@ -1,6 +1,5 @@
 const MePoupe = require('../database/MePoupe')
 const jwt = require('jsonwebtoken')
-const bcrypt = require('bcrypt')
 require('dotenv').config()
 
 class apiController {
@@ -49,7 +48,6 @@ class apiController {
     verificar(req, res, next) {
 
         const token = req.headers['token']
-
         if (!token) {
             res.status(401)
             res.send({
@@ -59,7 +57,6 @@ class apiController {
         }
 
         jwt.verify(token, process.env.SECRET, (err, decoded) => {
-
             if (err) {
                 res.status(500)
                 res.send({
@@ -74,6 +71,7 @@ class apiController {
 
     logoff(req, res) {
         res.status(200)
+        console.log(req.headers.token)
         res.send({
             auth: false,
             token: null

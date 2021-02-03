@@ -1,7 +1,11 @@
-const { check } = require('express-validator')
+class tarefaValidation {
+    verificaID(id) {
+        if(Number.isInteger(parseInt(id)) == true) {
+            return 1
+        } else {
+            return 0
+        }
+    }
+}
 
-exports.listarPorId = [
-    check('id')
-        .exists().withMessage('O id não pode estar em branco')
-        .isInt().withMessage('O id deve ser numérico')
-]
+module.exports = new tarefaValidation()
